@@ -1,0 +1,88 @@
+// zeiroko-next-firebase/components/RoleCards.jsx
+
+'use client';
+import { useRouter } from 'next/navigation';
+
+const cardStyle = {
+        flex: 1,
+            minWidth: '300px',
+                padding: '40px',
+                    borderRadius: '10px',
+                        textAlign: 'center',
+                            cursor: 'pointer',
+                                backgroundColor: 'var(--color-card-bg)',
+                                    transition: 'transform 0.3s, box-shadow 0.3s',
+                                        border: '1px solid var(--color-border)',
+                                            fontFamily: 'var(--font-primary)',
+};
+
+const RoleDescription = ({ title, description, isHost }) => {
+        const router = useRouter();
+            const destination = isHost ? '/host' : '/advertiser';
+
+                const handleClick = () => {
+                            // You would typically call an API here to update the User role in Mongo
+                                    // For MVP, we route directly to the appropriate page.
+                                            router.push(destination);
+                };
+
+                    return (
+                                <div 
+                                            style={cardStyle} 
+                                                        className="glow-effect" // Use the CSS class for glow effect
+                                                                    onClick={handleClick}
+                                                                            >
+                                                                                        <h3 style={{ color: isHost ? 'var(--color-light-purple)' : 'var(--color-light-blue)', marginBottom: '10px' }}>
+                                                                                                        {title}
+                                                                                                                    </h3>
+                                                                                                                                <p style={{ marginBottom: '15px', opacity: 0.8 }}>{description}</p>
+                                                                                                                                            <button 
+                                                                                                                                                            style={{ 
+                                                                                                                                                                                    padding: '10px 20px', 
+                                                                                                                                                                                                        border: 'none', 
+                                                                                                                                                                                                                            borderRadius: '5px',
+                                                                                                                                                                                                                                                backgroundColor: isHost ? 'var(--color-dark-purple)' : 'var(--color-dark-blue)',
+                                                                                                                                                                                                                                                                    color: 'white',
+                                                                                                                                                                                                                                                                                        fontWeight: 'bold',
+                                                                                                                                                                                                                                                                                                            fontFamily: 'var(--font-primary)',
+                                                                                                                                                                                                                                                                                                                                cursor: 'pointer'
+                                                                                                                                                            }}
+                                                                                                                                                                        >
+                                                                                                                                                                                        Start as {isHost ? 'Host' : 'Advertiser'}
+                                                                                                                                                                                                    </button>
+                                                                                                                                                                                                            </div>
+                    );
+};
+
+export default function RoleCards() {
+        return (
+                    <div style={{ padding: '50px', maxWidth: '900px', margin: 'auto', position: 'relative', zIndex: 10 }}>
+                                <h1 style={{ textAlign: 'center', color: 'var(--color-text)', marginBottom: '30px' }}>
+                                                Welcome to ZEIROKO
+                                                            </h1>
+                                                                        <p style={{ textAlign: 'center', color: 'var(--color-text)', marginBottom: '50px', fontSize: '1.1em', maxWidth: '600px', margin: '0 auto 50px auto' }}>
+                                                                                        ZEIROKO is a peer-to-peer banner advertising network. Select your role to begin.
+                                                                                                    </p>
+                                                                                                                <div style={{ display: 'flex', gap: '30px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                                                                                                                                <RoleDescription 
+                                                                                                                                                    title="I'm a Host (Ambassador)"
+                                                                                                                                                                        description="Offer your website or platform ad space. Define your pricing, upload metrics, and manage banner placements."
+                                                                                                                                                                                            isHost={true}
+                                                                                                                                                                                                            />
+                                                                                                                                                                                                                            <RoleDescription 
+                                                                                                                                                                                                                                                title="I'm an Advertiser (Project)"
+                                                                                                                                                                                                                                                                    description="Browse available Host spaces, review site metrics, and submit your campaign banner and payment."
+                                                                                                                                                                                                                                                                                        isHost={false}
+                                                                                                                                                                                                                                                                                                        />
+                                                                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                                                            </div>
+        );
+}
+
+        )
+}
+                                                                                                                                                            }}
+                    )
+                }
+}
+}
