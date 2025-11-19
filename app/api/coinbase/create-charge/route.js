@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { Client, resources } from 'coinbase-commerce-node';
-import { connectDB } from '../../../../lib/db';
-import Payment from '../../../../lib/models/Payment';
+import { connectDB } from '@/lib/db';
+import Payment from '@/lib/models/Payment';
 
 Client.init(process.env.COINBASE_COMMERCE_API_KEY);
 const { Charge } = resources;

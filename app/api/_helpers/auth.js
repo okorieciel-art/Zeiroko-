@@ -1,6 +1,6 @@
-import { verifyIdToken } from '../../../lib/firebaseAdmin';
-import User from '../../../lib/models/User';
-import { connectDB } from '../../../lib/db';
+import { verifyIdToken } from '@/lib/firebaseAdmin';
+import User from '@/lib/models/User';
+import { connectDB } from '@/lib/db';
 
 export async function requireAuth(req) {
   const authHeader = req.headers.get('authorization') || '';

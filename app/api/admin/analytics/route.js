@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { requireAuth } from '../../_helpers/auth';
+import { requireAuth } from '@/_helpers/auth';
 import { connectDB } from '@/lib/db';
 import Vote from '@/lib/models/Vote';
 import Payment from '@/lib/models/Payment';
