@@ -1,16 +1,16 @@
 {
-      "compilerOptions": {
-          "baseUrl": ".",
-              "paths": {
-                    // Defines alias for the root /components folder
-                          "@/components/*": ["components/*"],
-                                
-                                      // Defines alias for the root /lib folder (db, models, etc.)
-                                            "@/lib/*": ["lib/*"],
-                                                  
-                                                        // Defines alias for the root /app/api folder (helpers, etc.)
-                                                              "@/api/*": ["app/api/*"]
-                                                                  }
-                                                                    }
-                                                                    }
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      // Defines alias for the root /components folder
+      "@/components/*": ["components/*"],
+
+      // Defines alias for the root /lib folder (db, models, etc.)
+      "@/lib/*": ["lib/*"],
+
+      // Defines alias for the root /app/api folder (helpers, etc.)
+      "@/api/*": ["app/api/*"]
+    }
+  }
+}
 
