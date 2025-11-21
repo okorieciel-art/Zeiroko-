@@ -11,7 +11,7 @@
       "dependencies": {
             "@ethereumjs/common": "^10.1.0",
             "@ethereumjs/tx": "^10.1.0",
-            "@ethereum-provider": "^2.23.0",
+            "@walletconnect/ethereum-provider": "^2.23.0",
             "axios": "^1.13.2",
             "cloudinary": "^1.36.0",
             "coinbase-commerce-node": "^1.0.4",

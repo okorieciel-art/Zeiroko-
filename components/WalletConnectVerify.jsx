@@ -1,7 +1,7 @@
 // components/WalletConnectVerify.jsx
 'use client';
 import React, { useState } from 'react';
-import WalletConnectProvider from '@walletconnect/web3-provider';
+import WalletConnectProvider from '@walletconnect/ethereum-provider';
 import { ethers } from 'ethers';
 import axios from 'axios';
 
@@ -10,23 +10,43 @@ export default function WalletConnectVerify({ idToken /* optional - Firebase idT
     const [status, setStatus] = useState('');
       const idTok = idToken || (typeof window !== 'undefined' && localStorage.getItem('ZE_ID_TOKEN'));
 
-        async function connectAndVerify() {
-            setStatus('Initializing wallet connect...');
-                try {
-                      const provider = new WalletConnectProvider({
-                              rpc: {
-                                        1: 'https://cloudflare-eth.com',
-                                                  137: 'https://polygon-rpc.com'
-                                                          },
-                                                                  qrcode: true
-                                                                        });
+            async function connectAndVerify() {
+                  setStatus('Initializing wallet connect...');
+                        try {
+                                                                  const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
+                                                                  if (!projectId) {
+                                                                        setStatus('Missing WalletConnect Project ID (NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID)');
+                                                                        return;
+                                                                  }
 
-                                                                              // enable session (open QR)
-                                                                                    await provider.enable();
+                                                                  // RPC endpoints and metadata for WalletConnect v2
+                                                                  const rpcMap = {
+                                                                        1: 'https://cloudflare-eth.com',
+                                                                        137: 'https://polygon-rpc.com',
+                                                                  };
 
-                                                                                          // make an ethers provider
-                                                                                                const web3Provider = new ethers.BrowserProvider(provider); // ethers v6
-                                                                                                      const signer = await web3Provider.getSigner();
+                                                                  const metadata = {
+                                                                        name: 'Zeiroko',
+                                                                        description: 'Zeiroko dApp',
+                                                                        url: typeof window !== 'undefined' ? window.location.origin : 'https://example.com',
+                                                                        icons: [typeof window !== 'undefined' ? `${window.location.origin}/favicon.ico` : 'https://example.com/favicon.ico'],
+                                                                  };
+
+                                                                  // init WalletConnect v2 provider with rpcMap and metadata
+                                                                  const provider = await WalletConnectProvider.init({
+                                                                        projectId,
+                                                                        chains: [1, 137],
+                                                                        showQrModal: true,
+                                                                        rpcMap,
+                                                                        metadata,
+                                                                  });
+
+                      // enable session (open modal/QR)
+                      await provider.enable();
+
+                      // make an ethers provider
+                      const web3Provider = new ethers.BrowserProvider(provider); // ethers v6
+                      const signer = await web3Provider.getSigner();
                                                                                                             const address = await signer.getAddress();
                                                                                                                   setAddr(address);
 
@@ -46,7 +66,7 @@ export default function WalletConnectVerify({ idToken /* optional - Firebase idT
                                                                                                                                                                                                   const message = nonceJson.message;
                                                                                                                                                                                                         setStatus('Signing message...');
                                                                                                                                                                                                               // sign the message
-                                                                                                                                                                                                                    const signed = await signer.signMessage(message);
+                                                                                                                                                                                                                  const signed = await signer.signMessage(message);
 
                                                                                                                                                                                                                           setStatus('Verifying signature with server...');
                                                                                                                                                                                                                                 // send signature and address to server
@@ -72,13 +92,26 @@ export default function WalletConnectVerify({ idToken /* optional - Firebase idT
                                                                                                                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                                                                                                                               }
 
-                                                                                                                                                                                                                                                                                                                                                                return (
-                                                                                                                                                                                                                                                                                                                                                                    <div>
-                                                                                                                                                                                                                                                                                                                                                                          <div style={{ marginBottom: 8 }}>
-                                                                                                                                                                                                                                                                                                                                                                                  <button className="glow-btn" onClick={connectAndVerify}>Connect Wallet (WalletConnect)</button>
-                                                                                                                                                                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                                                                                                                                                                              <div style={{ fontSize: 13, color: '#cfccee' }}>{status}</div>
-                                                                                                                                                                                                                                                                                                                                                                                                    {addr && <div style={{ marginTop: 8 }}><small>Address: {addr}</small></div>}
-                                                                                                                                                                                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                                                                                                                                                                                          );
+                                                                                                                                                                                                                                                                                                                                                            const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
+
+                                                                                                                                                                                                                                                                                                                                                            return (
+                                                                                                                                                                                                                                                                                                                                                                                                                        <div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                          <div style={{ marginBottom: 8 }}>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <button
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        className="glow-btn"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        onClick={connectAndVerify}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        disabled={!projectId}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                  >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Connect Wallet (WalletConnect)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                  </button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      <div style={{ fontSize: 13, color: '#cfccee' }}>{status}</div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      {!projectId && (
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <div style={{ marginTop: 8, color: '#ffb4b4', fontSize: 13 }}>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  WalletConnect Project ID not set. Add `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` to your environment to enable wallet connections. See https://walletconnect.com for details.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      )}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {addr && <div style={{ marginTop: 8 }}><small>Address: {addr}</small></div>}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          );
                                                                                                                                                                                                                                                                                                                                                                                                           }
