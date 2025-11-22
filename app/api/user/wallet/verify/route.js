@@ -1,7 +1,7 @@
 // app/api/user/wallet/verify/route.js
 import { NextResponse } from 'next/server';
 import { verifyMessage } from 'ethers/lib/utils.js'; // ethers v6
-import { requireAuth } from '@/app/api/_helpers/auth';
+import { requireAuth } from '@/_helpers/auth';
 import { connectDB } from '@/lib/db';
 
 export async function POST(request) {

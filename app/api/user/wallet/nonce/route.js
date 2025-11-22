@@ -1,7 +1,7 @@
 // app/api/user/wallet/nonce/route.js
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
-import { requireAuth } from '@/app/api/_helpers/auth';
+import { requireAuth } from '@/_helpers/auth';
 import { connectDB } from '@/lib/db';
 
 export async function GET(request) {

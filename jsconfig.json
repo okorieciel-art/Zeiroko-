@@ -7,9 +7,12 @@
 
       // Defines alias for the root /lib folder (db, models, etc.)
       "@/lib/*": ["lib/*"],
+      // Inside the "paths": {} object
+      "@/_helpers/*": ["_helpers/*"],
 
       // Defines alias for the root /app/api folder (helpers, etc.)
       "@/api/*": ["app/api/*"]
+
     }
   }
 }

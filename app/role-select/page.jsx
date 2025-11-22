@@ -1,6 +1,6 @@
 // zeiroko-next-firebase/app/role-select/page.jsx
 
-import RoleCards from "../../components/RoleCards";
+import RoleCards from "@/components/RoleCards";
 
 export default function RoleSelectPage() {
     return (
